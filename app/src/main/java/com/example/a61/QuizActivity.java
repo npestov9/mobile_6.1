@@ -1,32 +1,36 @@
 package com.example.a61;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.RadioGroup;
 import android.widget.RadioButton;
 import android.widget.Button;
+import android.content.Intent;
 import android.view.View;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
-import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.JSONException;
-
 public class QuizActivity extends Activity {
+    private List<String> userAnswers = new ArrayList<>();
+    private List<String> correctAnswers = new ArrayList<>();
     private TextView questionTextView;
     private RadioGroup answersRadioGroup;
-    private Button submitAnswerButton, nextQuestionButton;
-    private ArrayList<JSONObject> questions = new ArrayList<>();
+    private Button nextQuestionButton;
     private int currentQuestionIndex = 0;
+    private List<JSONObject> questions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +39,67 @@ public class QuizActivity extends Activity {
 
         questionTextView = findViewById(R.id.questionTextView);
         answersRadioGroup = findViewById(R.id.answersRadioGroup);
-        submitAnswerButton = findViewById(R.id.submitAnswerButton);
         nextQuestionButton = findViewById(R.id.nextQuestionButton);
 
-        submitAnswerButton.setOnClickListener(v -> checkAnswer());
-        nextQuestionButton.setOnClickListener(v -> showNextQuestion());
+        fetchQuestions();  // Assume this method fetches the questions and populates `questions`
 
-        fetchQuestions();
+        nextQuestionButton.setOnClickListener(v -> {
+            int selectedId = answersRadioGroup.getCheckedRadioButtonId();
+            RadioButton selectedRadioButton = findViewById(selectedId);
+            userAnswers.add(selectedRadioButton.getText().toString());
+            checkAnswer(selectedRadioButton.getText().toString());
+
+            currentQuestionIndex++;  // Move this line before displayQuestion
+            if (currentQuestionIndex < questions.size()) {
+                displayQuestion(questions.get(currentQuestionIndex));
+            } else {
+                showResults();
+            }
+        });
+
+    }
+
+    private void checkAnswer(String selectedAnswer) {
+        String correctAnswer = correctAnswers.get(currentQuestionIndex);
+        if (selectedAnswer.equals(correctAnswer)) {
+            // This answer is correct
+            // Optionally handle correct answer
+        } else {
+            // This answer is incorrect
+            // Optionally handle incorrect answer
+        }
+
+        nextQuestionButton.setVisibility(View.VISIBLE);
+    }
+
+    private void displayQuestion(JSONObject question) {
+        try {
+            String questionText = question.getString("question");
+            JSONArray incorrectAnswers = question.getJSONArray("incorrect_answers");
+            String correctAnswer = question.getString("correct_answer");
+
+            questionTextView.setText(questionText);
+            correctAnswers.add(correctAnswer);
+
+            answersRadioGroup.removeAllViews();
+            for (int i = 0; i < incorrectAnswers.length(); i++) {
+                RadioButton radioButton = new RadioButton(this);
+                radioButton.setText(incorrectAnswers.getString(i));
+                answersRadioGroup.addView(radioButton);
+            }
+            RadioButton correctRadioButton = new RadioButton(this);
+            correctRadioButton.setText(correctAnswer);
+            answersRadioGroup.addView(correctRadioButton);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showResults() {
+        Intent intent = new Intent(this, ResultsActivity.class);
+        intent.putStringArrayListExtra("userAnswers", new ArrayList<>(userAnswers));
+        intent.putStringArrayListExtra("correctAnswers", new ArrayList<>(correctAnswers));
+        startActivity(intent);
     }
 
     private void fetchQuestions() {
@@ -72,49 +130,38 @@ public class QuizActivity extends Activity {
             }
         });
     }
-
     private void showNextQuestion() {
         if (currentQuestionIndex < questions.size()) {
-            try {
-                JSONObject currentQuestion = questions.get(currentQuestionIndex);
-                String question = currentQuestion.getString("question");
-                questionTextView.setText(question);
-                JSONArray incorrectAnswers = currentQuestion.getJSONArray("incorrect_answers");
-                String correctAnswer = currentQuestion.getString("correct_answer");
+            JSONObject currentQuestion = questions.get(currentQuestionIndex);
+            runOnUiThread(() -> {
+                try {
+                    String question = currentQuestion.getString("question");
+                    JSONArray incorrectAnswers = currentQuestion.getJSONArray("incorrect_answers");
+                    String correctAnswer = currentQuestion.getString("correct_answer");
 
-                answersRadioGroup.removeAllViews();
-                for (int i = 0; i < incorrectAnswers.length(); i++) {
-                    RadioButton radioButton = new RadioButton(this);
-                    radioButton.setText(incorrectAnswers.getString(i));
-                    answersRadioGroup.addView(radioButton);
+                    questionTextView.setText(question);
+                    correctAnswers.add(correctAnswer);
+
+                    answersRadioGroup.removeAllViews();
+                    for (int i = 0; i < incorrectAnswers.length(); i++) {
+                        RadioButton radioButton = new RadioButton(this);
+                        radioButton.setText(incorrectAnswers.getString(i));
+                        answersRadioGroup.addView(radioButton);
+                    }
+
+                    RadioButton correctRadioButton = new RadioButton(this);
+                    correctRadioButton.setText(correctAnswer);
+                    answersRadioGroup.addView(correctRadioButton);
+
+                    nextQuestionButton.setVisibility(View.VISIBLE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                // Add correct answer
-                RadioButton correctRadioButton = new RadioButton(this);
-                correctRadioButton.setText(correctAnswer);
-                answersRadioGroup.addView(correctRadioButton);
-
-                submitAnswerButton.setVisibility(View.VISIBLE);
-                nextQuestionButton.setVisibility(View.GONE);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            });
         } else {
-            // Finish or show results
             showResults();
         }
     }
 
-    private void checkAnswer() {
-        // Implement answer checking logic here
-        nextQuestionButton.setVisibility(View.VISIBLE);
-        submitAnswerButton.setVisibility(View.GONE);
-        currentQuestionIndex++;
-    }
 
-    private void showResults() {
-        // Intent to a new Activity that shows results
-        Intent intent = new Intent(this, ResultsActivity.class);
-        startActivity(intent);
-    }
 }

@@ -18,20 +18,20 @@
         android:layout_below="@id/questionTextView"
         android:layout_marginTop="20dp" />
 
-    <Button
-        android:id="@+id/submitAnswerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit Answer"
-        android:layout_below="@id/answersRadioGroup"
-        android:layout_marginTop="20dp" />
+<!--    <Button-->
+<!--        android:id="@+id/submitAnswerButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Submit Answer"-->
+<!--        android:layout_below="@id/answersRadioGroup"-->
+<!--        android:layout_marginTop="20dp" />-->
 
     <Button
         android:id="@+id/nextQuestionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Next Question"
-        android:layout_below="@id/submitAnswerButton"
-        android:layout_marginTop="10dp"
-        android:visibility="gone" />
+        android:layout_below="@+id/answersRadioGroup"
+        android:layout_marginTop="10dp"/>
+<!--        android:visibility="gone" />-->
 </RelativeLayout>
