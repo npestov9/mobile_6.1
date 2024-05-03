@@ -18,7 +18,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -60,6 +62,8 @@ public class QuizActivity extends Activity {
             }
         });
 
+
+
     }
 
     private void checkAnswer(String selectedAnswer) {
@@ -75,8 +79,61 @@ public class QuizActivity extends Activity {
         nextQuestionButton.setVisibility(View.VISIBLE);
     }
 
+    private static final Map<String, String> entities;
+    static {
+        entities = new HashMap<>();
+        // Basic HTML entities
+        entities.put("&quot;", "\""); // Quotation mark
+        entities.put("&apos;", "'");  // Apostrophe
+        entities.put("&amp;", "&");   // Ampersand
+        entities.put("&lt;", "<");    // Less-than
+        entities.put("&gt;", ">");    // Greater-than
+
+        // Extended entities
+        entities.put("&nbsp;", " ");  // Non-breaking space
+        entities.put("&ndash;", "–"); // En dash
+        entities.put("&mdash;", "—"); // Em dash
+        entities.put("&iexcl;", "¡"); // Inverted exclamation mark
+        entities.put("&cent;", "¢");  // Cent sign
+        entities.put("&pound;", "£"); // Pound sign
+        entities.put("&curren;", "¤"); // Currency sign
+        entities.put("&yen;", "¥");   // Yen sign
+        entities.put("&brvbar;", "|"); // Broken bar
+        entities.put("&sect;", "§");  // Section sign
+        entities.put("&uml;", "¨");   // Diaeresis
+        entities.put("&copy;", "©");  // Copyright
+        entities.put("&ordf;", "ª");  // Feminine ordinal indicator
+        entities.put("&laquo;", "«"); // Left-pointing double angle quotation mark
+        entities.put("&not;", "¬");   // Not sign
+        entities.put("&reg;", "®");   // Registered sign
+        entities.put("&macr;", "¯");  // Macron
+        entities.put("&deg;", "°");   // Degree
+        entities.put("&plusmn;", "±"); // Plus-minus
+        entities.put("&sup2;", "²");  // Superscript two
+        entities.put("&sup3;", "³");  // Superscript three
+        entities.put("&acute;", "´"); // Acute accent
+        entities.put("&micro;", "µ"); // Micro sign
+        entities.put("&para;", "¶");  // Pilcrow sign
+        entities.put("&middot;", "·"); // Middle dot
+        entities.put("&cedil;", "¸"); // Cedilla
+        entities.put("&sup1;", "¹");  // Superscript one
+        entities.put("&ordm;", "º");  // Masculine ordinal indicator
+        entities.put("&raquo;", "»"); // Right-pointing double angle quotation mark
+        entities.put("&frac14;", "¼"); // Fraction one quarter
+        entities.put("&frac12;", "½"); // Fraction one half
+        entities.put("&frac34;", "¾"); // Fraction three quarters
+        entities.put("&iquest;", "¿"); // Inverted question mark
+        // Add more entities as needed
+    }
+
     public static String decodeHtmlEntities(String source) {
-        return StringEscapeUtils.unescapeHtml4(source);
+        if (source == null) {
+            return null;
+        }
+        for (Map.Entry<String, String> entry : entities.entrySet()) {
+            source = source.replace(entry.getKey(), entry.getValue());
+        }
+        return source;
     }
 
     private void displayQuestion(JSONObject question) {
