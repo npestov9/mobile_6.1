@@ -6,12 +6,14 @@
     <!-- Add a Button at the bottom of the screen -->
     <Button
         android:id="@+id/confirmButton"
-        android:layout_width="wrap_content"
+        android:layout_width="253dp"
         android:layout_height="wrap_content"
-        android:text="Confirm"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_background"
+        android:text="Confirm"
+        android:textColor="@android:color/white" />
 
     <ListView
         android:id="@+id/topicsListView"

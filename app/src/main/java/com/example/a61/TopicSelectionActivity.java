@@ -1,6 +1,7 @@
 package com.example.a61;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.a61.R;
+import com.example.a61.adapters.TopicsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,8 +27,8 @@ import okhttp3.Response;
 
 public class TopicSelectionActivity extends Activity {
     private ListView topicsListView;
+    private TopicsAdapter topicsAdapter;
     private List<String> topicsList = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +36,8 @@ public class TopicSelectionActivity extends Activity {
         setContentView(R.layout.activity_topic_selection);
 
         topicsListView = findViewById(R.id.topicsListView);
-        adapter = new ArrayAdapter<>(this, R.layout.list_item_topic, R.id.topicTextView, topicsList);
-        topicsListView.setAdapter(adapter);
-
-        // Setup item click listener to handle the button inside each item
-        topicsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Button addButton = view.findViewById(R.id.addButton);
-                addButton.setOnClickListener(v -> {
-                    // Handle the addition logic here
-                    // Example: add topic to selected list or display a toast
-                });
-            }
-        });
+        topicsAdapter = new TopicsAdapter(this, topicsList);
+        topicsListView.setAdapter(topicsAdapter);
 
         fetchCategories();
     }
@@ -80,7 +70,7 @@ public class TopicSelectionActivity extends Activity {
                     runOnUiThread(() -> {
                         topicsList.clear();
                         topicsList.addAll(categoryNames);
-                        adapter.notifyDataSetChanged(); // Refresh the list with new data
+                        topicsAdapter.notifyDataSetChanged(); // Refresh the list with new data
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -89,3 +79,4 @@ public class TopicSelectionActivity extends Activity {
         });
     }
 }
+

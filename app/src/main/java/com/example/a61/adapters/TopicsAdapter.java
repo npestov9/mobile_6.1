@@ -1,6 +1,7 @@
 package com.example.a61.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ public class TopicsAdapter extends ArrayAdapter<String> {
         super(context, 0, topics);
     }
 
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_topic, parent, false);
@@ -28,13 +28,19 @@ public class TopicsAdapter extends ArrayAdapter<String> {
         String topic = getItem(position);
 
         textView.setText(topic);
+        addButton.setFocusable(false);
+        addButton.setClickable(true);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle click here
+                Button b = (Button) v;
+                b.setText("Added");
+                b.setEnabled(false); // Disable the button after click to avoid multiple clicks
+                b.setBackgroundColor(Color.parseColor("#4CAF50")); // Change button color to green
             }
         });
 
         return convertView;
     }
+
 }

@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:padding="8dp">
+
+    <TextView
+        android:id="@+id/topicTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="15sp"
+        android:text="Sample Topic" />
 
     <Button
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:text="Add" />
-
-    <TextView
-        android:id="@+id/topicTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/addButton"
-        android:textSize="18sp"
-        android:text="Sample Topic" />
-</RelativeLayout>
+        android:background="@drawable/button_background_red"
+    android:text="Add"
+    android:textColor="@android:color/white" />
+</LinearLayout>
