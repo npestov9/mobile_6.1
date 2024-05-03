@@ -43,13 +43,9 @@ public class LoginActivity extends Activity {
     }
 
     private void login() {
-        // For now, any username and password will work.
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
-        // If you had specific conditions or authentication, it would go here.
-
-        // Navigate to DashboardActivity
         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
         startActivity(intent);
     }

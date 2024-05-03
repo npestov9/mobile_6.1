@@ -2,6 +2,7 @@ package com.example.a61;
 
 // SetupActivity.java
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,8 @@ public class SetupActivity extends Activity {
         createAccountButton.setOnClickListener(v -> {
             if (validateAccountCreation()) {
                 // Create account and navigate to LoginActivity
-                finish();
+                Intent intent = new Intent(SetupActivity.this, TopicSelectionActivity.class);
+                startActivity(intent);
             } else {
                 // Handle errors (e.g., display error messages)
             }
