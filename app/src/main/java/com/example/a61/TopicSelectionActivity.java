@@ -6,6 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
+import com.example.a61.adapters.TopicsAdapter;
+
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,19 +32,8 @@ public class TopicSelectionActivity extends Activity {
         setContentView(R.layout.activity_topic_selection);
         topicsListView = findViewById(R.id.topicsListView);
         topicsList = new ArrayList<>(); // This should be filled with the API's categories
-        topicsAdapter = new ArrayAdapter<>(this, R.layout.list_item_topic, R.id.checkbox, topicsList);
+        topicsAdapter = new TopicsAdapter(this, topicsList, selectedTopics);
         topicsListView.setAdapter(topicsAdapter);
-        topicsListView.setOnItemClickListener((parent, view, position, id) -> {
-            CheckBox checkBox = (CheckBox) view;
-            String topic = checkBox.getText().toString();
-            if (selectedTopics.contains(topic)) {
-                selectedTopics.remove(topic);
-                checkBox.setChecked(false);
-            } else {
-                selectedTopics.add(topic);
-                checkBox.setChecked(true);
-            }
-        });
         fetchCategories();
     }
 
