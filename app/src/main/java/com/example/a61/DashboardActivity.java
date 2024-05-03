@@ -2,18 +2,24 @@ package com.example.a61;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DashboardActivity extends Activity {
     private TextView welcomeTextView;
     private TextView taskCountTextView;
-    private List<String> topics = new ArrayList<>();
+    private Map<String, Integer> topicsMap = new HashMap<>();
     private List<String> selectedTopics = new ArrayList<>();
 
     @Override
@@ -24,60 +30,87 @@ public class DashboardActivity extends Activity {
         welcomeTextView = findViewById(R.id.welcomeTextView);
         taskCountTextView = findViewById(R.id.taskCountTextView);
 
-        String userName = "Your Name"; // Ideally, this should be dynamically fetched based on user session
-        welcomeTextView.setText("Hello, " + userName);
+        // Initialize selectedTopics list
+        selectedTopics = new ArrayList<>();
 
-        // Dummy data for topics
-        topics.add("Math");
-        topics.add("Science");
-        topics.add("History");
-        topics.add("Literature");
-        topics.add("Geography");
+        Intent intent = getIntent();
+        ArrayList<String> topics = intent.getStringArrayListExtra("selectedTopics");
+        if (topics != null) {
+            selectedTopics.addAll(topics);
+        }
 
-        // Select 3 random topics
-        selectRandomTopics(3);
+        HashMap<String, Integer> receivedMap = (HashMap<String, Integer>) intent.getSerializableExtra("topicsMap");
+        if (receivedMap != null) {
+            topicsMap.putAll(receivedMap);
+        }
 
+        welcomeTextView.setText("Hello, Your Name");
         updateTaskCards();
     }
 
-    private void selectRandomTopics(int count) {
-        Collections.shuffle(topics);
-        selectedTopics = topics.subList(0, count);
-    }
 
     public void updateTaskCards() {
-        taskCountTextView.setText("You have " + selectedTopics.size() + " tasks due");
+        LinearLayout tasksContainer = findViewById(R.id.tasksContainer);
+        tasksContainer.removeAllViews();  // Clear previous task views
 
-        for (int i = 1; i <= selectedTopics.size(); i++) {
-            int resId = getResources().getIdentifier("generatedTask" + i, "id", getPackageName());
-            TextView taskView = findViewById(resId);
-            if (taskView != null) {
-                taskView.setText(selectedTopics.get(i-1) + " - Quiz on this topic");
-            } else {
-                // Log or handle the case where the task view is not found
-                Log.e("DashboardActivity", "Task TextView not found for ID: generatedTask" + i);
-            }
+        for (String topic : selectedTopics) {
+            CardView cardView = new CardView(this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            layoutParams.setMargins(0, 0, 0, 20);
+            cardView.setLayoutParams(layoutParams);
+            cardView.setCardBackgroundColor(Color.WHITE);
+            cardView.setRadius(8);
+
+            TextView textView = new TextView(this);
+            textView.setLayoutParams(new CardView.LayoutParams(
+                    CardView.LayoutParams.MATCH_PARENT,
+                    CardView.LayoutParams.WRAP_CONTENT
+            ));
+            textView.setText(topic + " - Click to start quiz");
+            textView.setTextSize(18);
+            textView.setPadding(16, 16, 16, 16);
+            textView.setTextColor(Color.BLACK);
+
+            cardView.addView(textView);
+            cardView.setOnClickListener(v -> onTaskClick(topic));
+
+            tasksContainer.addView(cardView);
         }
     }
 
-
-    public void onTaskClick(View view) {
-        // Determine which task was clicked
-        String topic = ((TextView)view).getText().toString().split(" - ")[0];
+    public void onTaskClick(String topic) {
         Intent intent = new Intent(DashboardActivity.this, QuizActivity.class);
         intent.putExtra("topic", topic);
-
         startActivity(intent);
     }
+
+//    public void onTaskClick(String topic) {
+//        int categoryId = topicsMap.get(topic);
+//        Intent intent = new Intent(DashboardActivity.this, QuizActivity.class);
+//        intent.putExtra("category_id", categoryId); // Pass category ID to QuizActivity
+//        startActivityForResult(intent, categoryId); // Use category ID as request code for simplicity
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Handle quiz completion
         if (resultCode == Activity.RESULT_OK) {
-            String completedTopic = data.getStringExtra("completedTopic");
-            selectedTopics.remove(completedTopic);
-            updateTaskCards(); // Refresh task cards
+            // Find the topic name using category ID (requestCode)
+            String completedTopic = null;
+            for (Map.Entry<String, Integer> entry : topicsMap.entrySet()) {
+                if (entry.getValue().equals(requestCode)) {
+                    completedTopic = entry.getKey();
+                    break;
+                }
+            }
+
+            if (completedTopic != null) {
+                selectedTopics.remove(completedTopic);
+                updateTaskCards(); // Refresh task cards to remove the completed one
+            }
         }
     }
 }

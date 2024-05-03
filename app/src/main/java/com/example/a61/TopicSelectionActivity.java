@@ -44,12 +44,10 @@ public class TopicSelectionActivity extends Activity {
 
         fetchCategories();
 
-        confirmBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TopicSelectionActivity.this, DashboardActivity.class);
-                startActivity(intent);
-            }
+        confirmBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(TopicSelectionActivity.this, DashboardActivity.class);
+            intent.putStringArrayListExtra("selectedTopics", new ArrayList<>(topicsList)); // Ensure this matches what DashboardActivity expects
+            startActivity(intent);
         });
     }
 

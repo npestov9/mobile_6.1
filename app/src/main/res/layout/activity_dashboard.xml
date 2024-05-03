@@ -28,49 +28,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/task1CardView"
+    <LinearLayout
+        android:id="@+id/tasksContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/taskCountTextView"
-        android:layout_marginTop="20dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onTaskClick"
-        android:foreground="?android:attr/selectableItemBackground">
-
-        <TextView
-            android:id="@+id/generatedTask1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Generated Task 1 - Small Description"
-            android:textSize="18sp"
-            android:padding="16dp"
-            android:textColor="@android:color/black" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/task2CardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/task1CardView"
         android:layout_marginTop="10dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onTaskClick"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:orientation="vertical"/>
 
-        <TextView
-            android:id="@+id/generatedTask2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Generated Task 2 - Small Description"
-            android:textSize="18sp"
-            android:padding="16dp"
-            android:textColor="@android:color/black" />
-    </androidx.cardview.widget.CardView>
 </RelativeLayout>

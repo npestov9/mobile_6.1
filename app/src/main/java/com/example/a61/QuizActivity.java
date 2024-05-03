@@ -178,9 +178,10 @@ public class QuizActivity extends Activity {
 
 
     private void fetchQuestions() {
-        OkHttpClient client = new OkHttpClient();
-        int categoryId = categoryMap.get(topic);
+        int categoryId = getIntent().getIntExtra("category_id", 0); // Default to 0 or a safe ID
         String url = "https://opentdb.com/api.php?amount=3&type=multiple&category=" + categoryId;
+
+        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -191,20 +192,22 @@ public class QuizActivity extends Activity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                try {
-                    JSONObject jsonResponse = new JSONObject(response.body().string());
-                    JSONArray jsonQuestions = jsonResponse.getJSONArray("results");
-                    for (int i = 0; i < jsonQuestions.length(); i++) {
-                        questions.add(jsonQuestions.getJSONObject(i));
-                    }
-                    runOnUiThread(() -> displayQuestion(questions.get(currentQuestionIndex)));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                handleResponse(response);
             }
         });
     }
+
+    private void handleResponse(Response response) throws IOException {
+        try {
+            String jsonData = response.body().string();
+            JSONObject jsonResponse = new JSONObject(jsonData);
+            JSONArray jsonQuestions = jsonResponse.getJSONArray("results");
+            // Handle the questions...
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showNextQuestion() {
         if (currentQuestionIndex < questions.size()) {
             JSONObject currentQuestion = questions.get(currentQuestionIndex);
