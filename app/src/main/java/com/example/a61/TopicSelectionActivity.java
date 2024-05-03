@@ -3,15 +3,9 @@ package com.example.a61;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.example.a61.adapters.TopicsAdapter;
-
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,9 +14,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class TopicSelectionActivity extends Activity {
     private ListView topicsListView;
-    private ArrayAdapter<String> topicsAdapter;
+    private TopicsAdapter topicsAdapter;
     private ArrayList<String> topicsList;
     private HashSet<String> selectedTopics = new HashSet<>();
 
@@ -30,10 +30,13 @@ public class TopicSelectionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_selection);
+
         topicsListView = findViewById(R.id.topicsListView);
-        topicsList = new ArrayList<>(); // This should be filled with the API's categories
+        topicsList = new ArrayList<>(); // Populate this with your topics
+        selectedTopics = new HashSet<>(); // Initialize the set for selected topics
         topicsAdapter = new TopicsAdapter(this, topicsList, selectedTopics);
         topicsListView.setAdapter(topicsAdapter);
+
         fetchCategories();
     }
 
@@ -42,7 +45,7 @@ public class TopicSelectionActivity extends Activity {
         String url = "https://opentdb.com/api_category.php";
 
         Request request = new Request.Builder().url(url).build();
-        client.newCall(request).enqueue(new okhttp3.Callback() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -63,7 +66,7 @@ public class TopicSelectionActivity extends Activity {
                     runOnUiThread(() -> {
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(TopicSelectionActivity.this,
                                 android.R.layout.simple_list_item_1, categoryNames);
-                        topicsListView.setAdapter(adapter);
+                        topicsListView.setAdapter(adapter); // Set adapter to ListView again if needed
                     });
                 } catch (Exception e) {
                     e.printStackTrace();

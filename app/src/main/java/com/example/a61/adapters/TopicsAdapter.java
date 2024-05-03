@@ -1,7 +1,6 @@
 package com.example.a61.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,17 +26,18 @@ public class TopicsAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CheckBox checkBox;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_topic, parent, false);
+        View view = convertView;
+        if (view == null) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            view = inflater.inflate(R.layout.list_item_topic, parent, false);
         }
-        checkBox = convertView.findViewById(R.id.checkbox);
+
+        CheckBox checkBox = view.findViewById(R.id.checkbox);
         String topic = topics.get(position);
         checkBox.setText(topic);
         checkBox.setChecked(selectedTopics.contains(topic));
 
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            Log.d("TopicsAdapter", "Checkbox clicked, isChecked: " + isChecked);
             if (isChecked) {
                 selectedTopics.add(topic);
             } else {
@@ -45,7 +45,6 @@ public class TopicsAdapter extends ArrayAdapter<String> {
             }
         });
 
-
-        return convertView;
+        return view;
     }
 }
