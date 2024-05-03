@@ -1,7 +1,9 @@
 package com.example.a61;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.TextView;
 import android.widget.RadioGroup;
 import android.widget.RadioButton;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.content.Intent;
 import android.view.View;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,21 +75,26 @@ public class QuizActivity extends Activity {
         nextQuestionButton.setVisibility(View.VISIBLE);
     }
 
+    public static String decodeHtmlEntities(String source) {
+        return StringEscapeUtils.unescapeHtml4(source);
+    }
+
     private void displayQuestion(JSONObject question) {
         try {
-            String questionText = question.getString("question");
+            String questionText = decodeHtmlEntities(question.getString("question"));
             JSONArray incorrectAnswers = question.getJSONArray("incorrect_answers");
-            String correctAnswer = question.getString("correct_answer");
+            String correctAnswer = decodeHtmlEntities(question.getString("correct_answer"));
 
             questionTextView.setText(questionText);
             correctAnswers.add(correctAnswer);
-
             answersRadioGroup.removeAllViews();
+
             for (int i = 0; i < incorrectAnswers.length(); i++) {
                 RadioButton radioButton = new RadioButton(this);
-                radioButton.setText(incorrectAnswers.getString(i));
+                radioButton.setText(decodeHtmlEntities(incorrectAnswers.getString(i)));
                 answersRadioGroup.addView(radioButton);
             }
+
             RadioButton correctRadioButton = new RadioButton(this);
             correctRadioButton.setText(correctAnswer);
             answersRadioGroup.addView(correctRadioButton);
@@ -94,6 +102,7 @@ public class QuizActivity extends Activity {
             e.printStackTrace();
         }
     }
+
 
     private void showResults() {
         Intent intent = new Intent(this, ResultsActivity.class);
@@ -162,6 +171,8 @@ public class QuizActivity extends Activity {
             showResults();
         }
     }
+
+
 
 
 }
