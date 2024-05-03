@@ -27,6 +27,9 @@
         <!-- Interests Activity -->
         <activity android:name=".InterestsActivity" />
 
+        <activity android:name=".DashboardActivity" />
+
+
         <!-- Add other activities as needed -->
     </application>
 
