@@ -45,10 +45,18 @@ public class TopicSelectionActivity extends Activity {
         fetchCategories();
 
         confirmBtn.setOnClickListener(v -> {
+            ArrayList<String> selectedTopics = new ArrayList<>();
+            for (int i = 0; i < topicsListView.getCount(); i++) {
+                if (topicsListView.isItemChecked(i)) {
+                    selectedTopics.add(topicsAdapter.getItem(i));
+                }
+            }
+
             Intent intent = new Intent(TopicSelectionActivity.this, DashboardActivity.class);
-            intent.putStringArrayListExtra("selectedTopics", new ArrayList<>(topicsList)); // Ensure this matches what DashboardActivity expects
+            intent.putStringArrayListExtra("selectedTopics", selectedTopics);
             startActivity(intent);
         });
+
     }
 
     private void fetchCategories() {

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
@@ -150,7 +151,7 @@ public class QuizActivity extends Activity {
 
             for (int i = 0; i < incorrectAnswers.length(); i++) {
                 RadioButton radioButton = new RadioButton(this);
-                radioButton.setText(incorrectAnswers.getString(i));
+                radioButton.setText(decodeHtmlEntities(incorrectAnswers.getString(i)));
                 answersRadioGroup.addView(radioButton);
             }
 
@@ -178,7 +179,7 @@ public class QuizActivity extends Activity {
 
 
     private void fetchQuestions() {
-        int categoryId = getIntent().getIntExtra("category_id", 0); // Default to 0 or a safe ID
+        int categoryId = getIntent().getIntExtra("category_id", 0); // Ensure this is the correct default ID
         String url = "https://opentdb.com/api.php?amount=3&type=multiple&category=" + categoryId;
 
         OkHttpClient client = new OkHttpClient();
@@ -186,27 +187,40 @@ public class QuizActivity extends Activity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+                Log.e("QuizActivity", "Failed to fetch questions", e);
+                runOnUiThread(() -> Toast.makeText(QuizActivity.this, "Failed to fetch questions: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                handleResponse(response);
+
+                final String responseData = response.body().string();
+                runOnUiThread(() -> handleResponse(responseData));
             }
         });
     }
 
-    private void handleResponse(Response response) throws IOException {
+    private void handleResponse(String jsonData) {
         try {
-            String jsonData = response.body().string();
             JSONObject jsonResponse = new JSONObject(jsonData);
             JSONArray jsonQuestions = jsonResponse.getJSONArray("results");
-            // Handle the questions...
+
+            for (int i = 0; i < jsonQuestions.length(); i++) {
+                questions.add(jsonQuestions.getJSONObject(i));
+            }
+
+            if (!questions.isEmpty()) {
+                runOnUiThread(() -> displayQuestion(questions.get(currentQuestionIndex)));
+            } else {
+                runOnUiThread(() -> Toast.makeText(QuizActivity.this, "No questions found.", Toast.LENGTH_SHORT).show());
+            }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("QuizActivity", "JSON parsing error", e);
+            runOnUiThread(() -> Toast.makeText(QuizActivity.this, "Error parsing questions: " + e.getMessage(), Toast.LENGTH_LONG).show());
         }
     }
+
 
     private void showNextQuestion() {
         if (currentQuestionIndex < questions.size()) {

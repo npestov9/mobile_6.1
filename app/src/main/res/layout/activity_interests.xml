@@ -1,4 +1,3 @@
-<!-- res/layout/activity_interests.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/selectInterestsTextView"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="19dp" />
 
     <Button
         style="@style/AppTheme.Button"
