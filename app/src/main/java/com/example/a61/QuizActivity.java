@@ -179,7 +179,7 @@ public class QuizActivity extends Activity {
 
 
     private void fetchQuestions() {
-        int categoryId = getIntent().getIntExtra("category_id", 0); // Ensure this is the correct default ID
+        int categoryId = getIntent().getIntExtra("topic_id", 0); // Ensure this is the correct default ID
         String url = "https://opentdb.com/api.php?amount=10&type=multiple&category=" + categoryId;
 
         Log.d("QuizActivity", "Fetching questions for category ID: " + categoryId);

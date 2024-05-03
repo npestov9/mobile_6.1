@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -79,6 +80,7 @@ public class DashboardActivity extends Activity {
         // Intent to start QuizActivity, passing the topic ID
         Intent intent = new Intent(this, QuizActivity.class);
         intent.putExtra("topic_id", topicId);
+        Log.d("Intnet", "Pasing intent: " + topicId);
         startActivity(intent);
     }
 }
