@@ -180,7 +180,10 @@ public class QuizActivity extends Activity {
 
     private void fetchQuestions() {
         int categoryId = getIntent().getIntExtra("category_id", 0); // Ensure this is the correct default ID
-        String url = "https://opentdb.com/api.php?amount=3&type=multiple&category=" + categoryId;
+        String url = "https://opentdb.com/api.php?amount=10&type=multiple&category=" + categoryId;
+
+        Log.d("QuizActivity", "Fetching questions for category ID: " + categoryId);
+        Log.d("QuizActivity", "URL: " + url); // Log the constructed URL
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
@@ -196,10 +199,13 @@ public class QuizActivity extends Activity {
                 if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
                 final String responseData = response.body().string();
+                Log.d("QuizActivity", "Response data: " + responseData); // Log the API response
                 runOnUiThread(() -> handleResponse(responseData));
             }
         });
     }
+
+
 
     private void handleResponse(String jsonData) {
         try {
