@@ -1,15 +1,76 @@
 <!-- res/layout/activity_dashboard.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundBlue">
+    android:background="@color/backgroundBlue"
+    android:padding="16dp">
 
     <TextView
-        android:id="@+id/dashboardTextView"
+        android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Welcome to Your Dashboard!"
+        android:text="Hello, Your Name"
         android:textSize="24sp"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/taskCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have 2 tasks due"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/welcomeTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/task1CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskCountTextView"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onTaskClick"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/generatedTask1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generated Task 1 - Small Description"
+            android:textSize="18sp"
+            android:padding="16dp"
+            android:textColor="@android:color/black" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/task2CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task1CardView"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onTaskClick"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/generatedTask2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generated Task 2 - Small Description"
+            android:textSize="18sp"
+            android:padding="16dp"
+            android:textColor="@android:color/black" />
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

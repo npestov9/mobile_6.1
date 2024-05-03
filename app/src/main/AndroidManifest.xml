@@ -29,6 +29,9 @@
 
         <activity android:name=".DashboardActivity" />
 
+        <activity android:name=".QuizActivity" />
+
+
 
         <!-- Add other activities as needed -->
     </application>
