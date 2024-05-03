@@ -44,6 +44,8 @@ public class QuizActivity extends Activity {
     private int currentQuestionIndex = 0;
     private List<JSONObject> questions = new ArrayList<>();
     private List<String> questionStrs = new ArrayList<>();
+    private String topic;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class QuizActivity extends Activity {
         questionTextView = findViewById(R.id.questionTextView);
         answersRadioGroup = findViewById(R.id.answersRadioGroup);
         nextQuestionButton = findViewById(R.id.nextQuestionButton);
+
+        topic = getIntent().getStringExtra("topic"); // Get the passed topic
 
         fetchQuestions();
 
@@ -175,8 +179,8 @@ public class QuizActivity extends Activity {
 
     private void fetchQuestions() {
         OkHttpClient client = new OkHttpClient();
-        String url = "https://opentdb.com/api.php?amount=3&type=multiple";
-
+        int categoryId = categoryMap.get(topic);
+        String url = "https://opentdb.com/api.php?amount=3&type=multiple&category=" + categoryId;
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
