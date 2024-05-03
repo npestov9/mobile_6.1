@@ -5,46 +5,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.a61.R;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 public class TopicsAdapter extends ArrayAdapter<String> {
-    private Context context;
-    private List<String> topics;
-    private HashSet<String> selectedTopics;
-
-    public TopicsAdapter(Context context, List<String> topics, HashSet<String> selectedTopics) {
+    // Assuming you have a constructor like this
+    public TopicsAdapter(Context context, ArrayList<String> topics, HashSet<String> selectedTopics) {
         super(context, R.layout.list_item_topic, topics);
-        this.context = context;
-        this.topics = topics;
-        this.selectedTopics = selectedTopics;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            view = inflater.inflate(R.layout.list_item_topic, parent, false);
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_topic, parent, false);
         }
 
-        CheckBox checkBox = view.findViewById(R.id.checkbox);
-        String topic = topics.get(position);
-        checkBox.setText(topic);
-        checkBox.setChecked(selectedTopics.contains(topic));
+        TextView textView = convertView.findViewById(R.id.topicTextView);
+        Button addButton = convertView.findViewById(R.id.addButton);
 
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                selectedTopics.add(topic);
-            } else {
-                selectedTopics.remove(topic);
-            }
+        String topic = getItem(position);
+        textView.setText(topic);
+        addButton.setOnClickListener(v -> {
+            // Add click behavior here
+            // For example: toggle selection in HashSet, update UI, etc.
         });
 
-        return view;
+        return convertView;
     }
 }
+

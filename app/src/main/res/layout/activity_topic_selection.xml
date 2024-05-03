@@ -1,12 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0077CC"> <!-- Blue background -->
+    android:background="@color/backgroundBlue"> <!-- Blue background -->
+
+    <!-- Add a Button at the bottom of the screen -->
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp" />
 
     <ListView
         android:id="@+id/topicsListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/confirmButton"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
         android:listSelector="@android:color/holo_blue_light"
