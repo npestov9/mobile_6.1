@@ -1,0 +1,29 @@
+<!-- res/layout/activity_interests.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundBlue"
+    tools:context=".InterestsActivity">
+
+    <TextView
+        style="@style/AppTheme.TextView"
+        android:id="@+id/selectInterestsTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Your Interests" />
+
+    <ListView
+        android:id="@+id/interestsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/selectInterestsTextView"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        style="@style/AppTheme.Button"
+        android:id="@+id/nextButton"
+        android:layout_below="@id/interestsListView"
+        android:layout_marginTop="20dp"
+        android:text="Next" />
+</RelativeLayout>
