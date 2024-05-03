@@ -1,6 +1,7 @@
 package com.example.a61;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -29,17 +30,27 @@ public class TopicSelectionActivity extends Activity {
     private ListView topicsListView;
     private TopicsAdapter topicsAdapter;
     private List<String> topicsList = new ArrayList<>();
+    private Button confirmBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_selection);
+        confirmBtn = findViewById((R.id.confirmButton));
 
         topicsListView = findViewById(R.id.topicsListView);
         topicsAdapter = new TopicsAdapter(this, topicsList);
         topicsListView.setAdapter(topicsAdapter);
 
         fetchCategories();
+
+        confirmBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TopicSelectionActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void fetchCategories() {

@@ -2,17 +2,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#E0F7FA">
+    android:background="@color/backgroundBlue"
+    android:textColor="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:textColor="@color/white">
 
         <LinearLayout
             android:id="@+id/resultsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:textColor="@color/white"
             android:padding="8dp">
             <!-- Dynamic content will be added here -->
         </LinearLayout>

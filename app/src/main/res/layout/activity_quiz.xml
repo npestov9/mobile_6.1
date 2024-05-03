@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#FAFAFA">
+    android:background="@color/backgroundBlue">
 
     <TextView
         android:id="@+id/questionTextView"
@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:padding="12dp"
-        android:background="#EEEEEE"
+        android:textColor="@color/white"
         android:textAlignment="center"/>
 
     <RadioGroup
@@ -21,6 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/questionTextView"
         android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:outlineAmbientShadowColor="@color/white"
         android:padding="12dp"/>
 
     <Button
