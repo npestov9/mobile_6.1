@@ -2,17 +2,20 @@ package com.example.a61;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.a61.adapters.TopicsAdapter;
+import com.example.a61.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -22,9 +25,8 @@ import okhttp3.Response;
 
 public class TopicSelectionActivity extends Activity {
     private ListView topicsListView;
-    private TopicsAdapter topicsAdapter;
-    private ArrayList<String> topicsList;
-    private HashSet<String> selectedTopics = new HashSet<>();
+    private List<String> topicsList = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +34,20 @@ public class TopicSelectionActivity extends Activity {
         setContentView(R.layout.activity_topic_selection);
 
         topicsListView = findViewById(R.id.topicsListView);
-        topicsList = new ArrayList<>(); // Populate this with your topics
-        selectedTopics = new HashSet<>(); // Initialize the set for selected topics
-        topicsAdapter = new TopicsAdapter(this, topicsList, selectedTopics);
-        topicsListView.setAdapter(topicsAdapter);
+        adapter = new ArrayAdapter<>(this, R.layout.list_item_topic, R.id.topicTextView, topicsList);
+        topicsListView.setAdapter(adapter);
+
+        // Setup item click listener to handle the button inside each item
+        topicsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Button addButton = view.findViewById(R.id.addButton);
+                addButton.setOnClickListener(v -> {
+                    // Handle the addition logic here
+                    // Example: add topic to selected list or display a toast
+                });
+            }
+        });
 
         fetchCategories();
     }
@@ -48,25 +60,27 @@ public class TopicSelectionActivity extends Activity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+                // Handle failure
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                }
 
                 try {
                     JSONObject jsonResponse = new JSONObject(response.body().string());
                     JSONArray categories = jsonResponse.getJSONArray("trivia_categories");
-                    ArrayList<String> categoryNames = new ArrayList<>();
+                    List<String> categoryNames = new ArrayList<>();
                     for (int i = 0; i < categories.length(); i++) {
                         JSONObject category = categories.getJSONObject(i);
                         categoryNames.add(category.getString("name"));
                     }
                     runOnUiThread(() -> {
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(TopicSelectionActivity.this,
-                                android.R.layout.simple_list_item_1, categoryNames);
-                        topicsListView.setAdapter(adapter); // Set adapter to ListView again if needed
+                        topicsList.clear();
+                        topicsList.addAll(categoryNames);
+                        adapter.notifyDataSetChanged(); // Refresh the list with new data
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
