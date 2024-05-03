@@ -1,34 +1,48 @@
 package com.example.a61;
 
+
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import java.util.List;
+import java.util.ArrayList;
 
 public class ResultsActivity extends Activity {
+    private LinearLayout questionsContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        List<String> userAnswers = getIntent().getStringArrayListExtra("userAnswers");
-        List<String> correctAnswers = getIntent().getStringArrayListExtra("correctAnswers");
+        questionsContainer = findViewById(R.id.questionsContainer);
 
-        LinearLayout resultsLayout = findViewById(R.id.resultsLayout);  // Assuming this is your layout to add results views
+        ArrayList<String> userAnswers = getIntent().getStringArrayListExtra("userAnswers");
+        ArrayList<String> correctAnswers = getIntent().getStringArrayListExtra("correctAnswers");
+        ArrayList<String> questions = getIntent().getStringArrayListExtra("questions");
 
-        for (int i = 0; i < userAnswers.size(); i++) {
-            TextView resultView = new TextView(this);
-            resultView.setText("Q" + (i + 1) + ": " + userAnswers.get(i));
-            resultView.setTextSize(16f);
+        for (int i = 0; i < questions.size(); i++) {
+            TextView questionView = new TextView(this);
+            questionView.setText(questions.get(i));
+            questionView.setTextSize(16f);
+            questionsContainer.addView(questionView);
+
+            TextView answerView = new TextView(this);
+            answerView.setText("Your answer: " + userAnswers.get(i));
+            answerView.setTextSize(16f);
 
             if (userAnswers.get(i).equals(correctAnswers.get(i))) {
-                resultView.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                answerView.setTextColor(Color.GREEN);
             } else {
-                resultView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                answerView.setTextColor(Color.RED);
+                TextView correctAnswerView = new TextView(this);
+                correctAnswerView.setText("Correct answer: " + correctAnswers.get(i));
+                correctAnswerView.setTextColor(Color.GREEN);
+                correctAnswerView.setTextSize(16f);
+                questionsContainer.addView(correctAnswerView);
             }
-
-            resultsLayout.addView(resultView);
+            questionsContainer.addView(answerView);
         }
     }
 }

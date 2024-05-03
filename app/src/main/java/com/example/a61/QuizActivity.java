@@ -36,6 +36,7 @@ public class QuizActivity extends Activity {
     private Button nextQuestionButton;
     private int currentQuestionIndex = 0;
     private List<JSONObject> questions = new ArrayList<>();
+    private List<String> questionStrs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class QuizActivity extends Activity {
             currentQuestionIndex++;  // Move this line before displayQuestion
             if (currentQuestionIndex < questions.size()) {
                 displayQuestion(questions.get(currentQuestionIndex));
+
             } else {
                 showResults();
             }
@@ -155,6 +157,8 @@ public class QuizActivity extends Activity {
             RadioButton correctRadioButton = new RadioButton(this);
             correctRadioButton.setText(correctAnswer);
             answersRadioGroup.addView(correctRadioButton);
+
+            questionStrs.add(questionText);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -162,9 +166,10 @@ public class QuizActivity extends Activity {
 
 
     private void showResults() {
-        Intent intent = new Intent(this, ResultsActivity.class);
+        Intent intent = new Intent(QuizActivity.this, ResultsActivity.class);
         intent.putStringArrayListExtra("userAnswers", new ArrayList<>(userAnswers));
         intent.putStringArrayListExtra("correctAnswers", new ArrayList<>(correctAnswers));
+        intent.putStringArrayListExtra("questions", new ArrayList<>(questionStrs));
         startActivity(intent);
     }
 
