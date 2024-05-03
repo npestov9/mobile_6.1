@@ -1,15 +1,21 @@
 package com.example.a61;
 
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.RadioGroup;
 import android.widget.RadioButton;
 import android.widget.Button;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONArray;
@@ -18,6 +24,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,39 +54,26 @@ public class QuizActivity extends Activity {
         answersRadioGroup = findViewById(R.id.answersRadioGroup);
         nextQuestionButton = findViewById(R.id.nextQuestionButton);
 
-        fetchQuestions();  // Assume this method fetches the questions and populates `questions`
+        fetchQuestions();
 
         nextQuestionButton.setOnClickListener(v -> {
-            int selectedId = answersRadioGroup.getCheckedRadioButtonId();
-            RadioButton selectedRadioButton = findViewById(selectedId);
-            userAnswers.add(selectedRadioButton.getText().toString());
-            checkAnswer(selectedRadioButton.getText().toString());
-
-            currentQuestionIndex++;  // Move this line before displayQuestion
-            if (currentQuestionIndex < questions.size()) {
-                displayQuestion(questions.get(currentQuestionIndex));
-
-            } else {
-                showResults();
+            if (answersRadioGroup.getCheckedRadioButtonId() == -1) {
+                Toast.makeText(this, "Please select an answer", Toast.LENGTH_SHORT).show();
+                return;
             }
+            checkAnswer();
         });
-
-
-
     }
 
-    private void checkAnswer(String selectedAnswer) {
-        String correctAnswer = correctAnswers.get(currentQuestionIndex);
-        if (selectedAnswer.equals(correctAnswer)) {
-            // This answer is correct
-            // Optionally handle correct answer
-        } else {
-            // This answer is incorrect
-            // Optionally handle incorrect answer
-        }
-
-        nextQuestionButton.setVisibility(View.VISIBLE);
+    private void checkAnswer() {
+        int selectedId = answersRadioGroup.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = findViewById(selectedId);
+        String selectedAnswer = selectedRadioButton.getText().toString();
+        boolean isCorrect = selectedAnswer.equals(correctAnswers.get(currentQuestionIndex));
+        setupResultAnimation(isCorrect);
+        userAnswers.add(selectedAnswer);
     }
+
 
     private static final Map<String, String> entities;
     static {
@@ -140,9 +134,9 @@ public class QuizActivity extends Activity {
 
     private void displayQuestion(JSONObject question) {
         try {
-            String questionText = decodeHtmlEntities(question.getString("question"));
+            String questionText = question.getString("question");
             JSONArray incorrectAnswers = question.getJSONArray("incorrect_answers");
-            String correctAnswer = decodeHtmlEntities(question.getString("correct_answer"));
+            String correctAnswer = question.getString("correct_answer");
 
             questionTextView.setText(questionText);
             correctAnswers.add(correctAnswer);
@@ -150,18 +144,21 @@ public class QuizActivity extends Activity {
 
             for (int i = 0; i < incorrectAnswers.length(); i++) {
                 RadioButton radioButton = new RadioButton(this);
-                radioButton.setText(decodeHtmlEntities(incorrectAnswers.getString(i)));
+                radioButton.setText(incorrectAnswers.getString(i));
                 answersRadioGroup.addView(radioButton);
             }
 
             RadioButton correctRadioButton = new RadioButton(this);
             correctRadioButton.setText(correctAnswer);
             answersRadioGroup.addView(correctRadioButton);
-
-            questionStrs.add(questionText);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void onAnswerSelected(View view) {
+        nextQuestionButton.setEnabled(true);
+
     }
 
 
@@ -169,7 +166,6 @@ public class QuizActivity extends Activity {
         Intent intent = new Intent(QuizActivity.this, ResultsActivity.class);
         intent.putStringArrayListExtra("userAnswers", new ArrayList<>(userAnswers));
         intent.putStringArrayListExtra("correctAnswers", new ArrayList<>(correctAnswers));
-        intent.putStringArrayListExtra("questions", new ArrayList<>(questionStrs));
         startActivity(intent);
     }
 
@@ -194,7 +190,7 @@ public class QuizActivity extends Activity {
                     for (int i = 0; i < jsonQuestions.length(); i++) {
                         questions.add(jsonQuestions.getJSONObject(i));
                     }
-                    runOnUiThread(() -> showNextQuestion());
+                    runOnUiThread(() -> displayQuestion(questions.get(currentQuestionIndex)));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -224,7 +220,7 @@ public class QuizActivity extends Activity {
                     correctRadioButton.setText(correctAnswer);
                     answersRadioGroup.addView(correctRadioButton);
 
-                    nextQuestionButton.setVisibility(View.VISIBLE);
+//                    nextQuestionButton.setVisibility(View.VISIBLE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -232,6 +228,29 @@ public class QuizActivity extends Activity {
         } else {
             showResults();
         }
+    }
+
+    private void setupResultAnimation(boolean isCorrect) {
+        int colorFrom = isCorrect ? Color.GREEN : Color.RED;
+        int colorTo = Color.TRANSPARENT;
+        ObjectAnimator animator = ObjectAnimator.ofArgb(answersRadioGroup, "backgroundColor", colorFrom, colorTo);
+        animator.setDuration(500);
+        animator.addUpdateListener(animation -> {
+            // You can add a listener if you want to perform any action midway through the animation
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(android.animation.Animator animation) {
+                super.onAnimationEnd(animation);
+                if (currentQuestionIndex < questions.size() - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion(questions.get(currentQuestionIndex));
+                } else {
+                    showResults();
+                }
+            }
+        });
+        animator.start();
     }
 
 
