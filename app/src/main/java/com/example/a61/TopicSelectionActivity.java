@@ -3,6 +3,7 @@ package com.example.a61;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 import okhttp3.Call;
@@ -15,16 +16,33 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TopicSelectionActivity extends Activity {
     private ListView topicsListView;
+    private ArrayAdapter<String> topicsAdapter;
+    private ArrayList<String> topicsList;
+    private HashSet<String> selectedTopics = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_selection);
-
         topicsListView = findViewById(R.id.topicsListView);
+        topicsList = new ArrayList<>(); // This should be filled with the API's categories
+        topicsAdapter = new ArrayAdapter<>(this, R.layout.list_item_topic, R.id.checkbox, topicsList);
+        topicsListView.setAdapter(topicsAdapter);
+        topicsListView.setOnItemClickListener((parent, view, position, id) -> {
+            CheckBox checkBox = (CheckBox) view;
+            String topic = checkBox.getText().toString();
+            if (selectedTopics.contains(topic)) {
+                selectedTopics.remove(topic);
+                checkBox.setChecked(false);
+            } else {
+                selectedTopics.add(topic);
+                checkBox.setChecked(true);
+            }
+        });
         fetchCategories();
     }
 
