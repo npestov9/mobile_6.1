@@ -134,13 +134,15 @@ public class QuizActivity extends Activity {
 
     private void displayQuestion(JSONObject question) {
         try {
-            String questionText = question.getString("question");
+            String questionText = decodeHtmlEntities(question.getString("question"));
             JSONArray incorrectAnswers = question.getJSONArray("incorrect_answers");
             String correctAnswer = question.getString("correct_answer");
 
             questionTextView.setText(questionText);
             correctAnswers.add(correctAnswer);
             answersRadioGroup.removeAllViews();
+
+            questionStrs.add(questionText);
 
             for (int i = 0; i < incorrectAnswers.length(); i++) {
                 RadioButton radioButton = new RadioButton(this);
@@ -166,8 +168,10 @@ public class QuizActivity extends Activity {
         Intent intent = new Intent(QuizActivity.this, ResultsActivity.class);
         intent.putStringArrayListExtra("userAnswers", new ArrayList<>(userAnswers));
         intent.putStringArrayListExtra("correctAnswers", new ArrayList<>(correctAnswers));
+        intent.putStringArrayListExtra("questions", new ArrayList<>(questionStrs));
         startActivity(intent);
     }
+
 
     private void fetchQuestions() {
         OkHttpClient client = new OkHttpClient();
