@@ -3,6 +3,7 @@ package com.example.a61;
 // SetupActivity.java
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,13 +26,21 @@ public class SetupActivity extends Activity {
 
         createAccountButton.setOnClickListener(v -> {
             if (validateAccountCreation()) {
-                // Create account and navigate to LoginActivity
                 Intent intent = new Intent(SetupActivity.this, TopicSelectionActivity.class);
+                saveUserData(usernameEditText.getText().toString(), emailEditText.getText().toString());
                 startActivity(intent);
             } else {
                 // Handle errors (e.g., display error messages)
             }
         });
+    }
+
+    private void saveUserData(String username, String email) {
+        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("USERNAME", username);
+        editor.putString("EMAIL", email);
+        editor.apply();  // Saves the data asynchronously
     }
 
     private boolean validateAccountCreation() {
