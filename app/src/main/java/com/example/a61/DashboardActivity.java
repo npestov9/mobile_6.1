@@ -17,7 +17,6 @@ public class DashboardActivity extends Activity {
     private static final Map<Integer, String> topicsMap = new HashMap<>();
     private static final Set<Integer> completedTopics = new HashSet<>();
 
-
     private TextView welcomeTextView;
     private TextView taskCountTextView;
     private LinearLayout tasksContainer;
@@ -31,13 +30,14 @@ public class DashboardActivity extends Activity {
         taskCountTextView = findViewById(R.id.taskCountTextView);
         tasksContainer = findViewById(R.id.tasksContainer);
 
-        welcomeTextView.setText("Hello, Your Name");
+        welcomeTextView.setText("Hello, and welcome");
         updateTaskCards();
     }
 
     private void updateTaskCards() {
         tasksContainer.removeAllViews();
 
+        // Assuming topicsMap is updated with the selected topics, we iterate through it to display tasks
         for (Map.Entry<Integer, String> entry : topicsMap.entrySet()) {
             if (!completedTopics.contains(entry.getKey())) {
                 addTopicCard(entry.getKey(), entry.getValue());
@@ -47,10 +47,11 @@ public class DashboardActivity extends Activity {
         int remainingTasks = topicsMap.size() - completedTopics.size();
         taskCountTextView.setText("You have " + remainingTasks + " tasks due");
     }
+
     static {
-        topicsMap.put(10, "Entertainment: Books");
-        topicsMap.put(11, "Entertainment: Film");
-        topicsMap.put(12, "Entertainment: Music");
+         topicsMap.put(10, "Entertainment: Books");
+         topicsMap.put(11, "Entertainment: Film");
+         topicsMap.put(12, "Entertainment: Music");
     }
 
     private void addTopicCard(int topicId, String topicName) {
@@ -71,8 +72,6 @@ public class DashboardActivity extends Activity {
         tasksContainer.addView(textView);
     }
 
-
-
     private void onTopicClick(int topicId) {
         completedTopics.add(topicId); // Mark this topic as completed
         updateTaskCards(); // Refresh the task cards
@@ -80,7 +79,6 @@ public class DashboardActivity extends Activity {
         // Intent to start QuizActivity, passing the topic ID
         Intent intent = new Intent(this, QuizActivity.class);
         intent.putExtra("topic_id", topicId);
-        Log.d("Intnet", "Pasing intent: " + topicId);
         startActivity(intent);
     }
 }

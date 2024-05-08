@@ -44,11 +44,14 @@ public class TopicSelectionActivity extends Activity {
 
         fetchCategories();
 
+// Inside confirmBtn.setOnClickListener
         confirmBtn.setOnClickListener(v -> {
             ArrayList<String> selectedTopics = new ArrayList<>();
             for (int i = 0; i < topicsListView.getCount(); i++) {
                 if (topicsListView.isItemChecked(i)) {
-                    selectedTopics.add(topicsAdapter.getItem(i));
+                    String selectedTopic = topicsAdapter.getItem(i);
+                    selectedTopics.add(selectedTopic);
+                    topicsList.remove(selectedTopic); // Remove selected topic from the list
                 }
             }
 
@@ -56,6 +59,7 @@ public class TopicSelectionActivity extends Activity {
             intent.putStringArrayListExtra("selectedTopics", selectedTopics);
             startActivity(intent);
         });
+
 
     }
 
