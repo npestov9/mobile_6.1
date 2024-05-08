@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +35,17 @@ public class DashboardActivity extends Activity {
 
         welcomeTextView.setText("Hello, and welcome");
         updateTaskCards();
+
+        ImageButton profileButton = findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this, ProfileActivity.class);
+                startActivity(intent);
+//                Toast.makeText(getApplicationContext(), "Profile button clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void updateTaskCards() {

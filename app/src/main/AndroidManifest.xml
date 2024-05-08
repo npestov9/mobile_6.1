@@ -36,6 +36,8 @@
 
         <activity android:name=".TopicSelectionActivity" />
 
+        <activity android:name=".ProfileActivity" />
+
 
 
 
