@@ -1,7 +1,9 @@
 package com.example.a61;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -41,6 +43,26 @@ public class ProfileActivity extends AppCompatActivity {
         incorectAnsTextView.setText("Incorrectly Answered: " +String.valueOf(incorrectAns));
         usernameTextView.setText(username);
         emailTextView.setText(email);
+
+
+        Button shareButton = findViewById(R.id.shareButton);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create the message to share (e.g., statistics)
+                String message = "Total Questions: " + correctAns+incorrectAns + "\n" +
+                        "Correctly Answered: " + correctAns + "\n" +
+                        "Incorrect Answers: " + incorrectAns;
+
+                // Create an Intent to share the message
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+                // Start the activity for sharing
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+            }
+        });
     }
 }
 
