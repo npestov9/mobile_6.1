@@ -35,10 +35,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         Integer correctAns = sharedPref.getInt("CORRECT_ANS", 0);
         Integer incorrectAns = sharedPref.getInt("INCORECT_ANS", 0);
-
+        Integer totalQs = correctAns + incorrectAns;
 
         // Set the retrieved data to TextViews
-        totalQsTextView.setText("Total Questions: " + String.valueOf(correctAns + incorrectAns));
+        totalQsTextView.setText("Total Questions: " + String.valueOf(totalQs));
         corectAnsTextView.setText("Correctly Answered: " +String.valueOf(correctAns));
         incorectAnsTextView.setText("Incorrectly Answered: " +String.valueOf(incorrectAns));
         usernameTextView.setText(username);
@@ -50,7 +50,9 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Create the message to share (e.g., statistics)
-                String message = "Total Questions: " + correctAns+incorrectAns + "\n" +
+                String message =
+                        "Check " + username + "'s quiz stats" + "\n\n"+
+                        "Total Questions: " + (totalQs) + "\n" +
                         "Correctly Answered: " + correctAns + "\n" +
                         "Incorrect Answers: " + incorrectAns;
 
