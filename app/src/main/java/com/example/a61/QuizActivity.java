@@ -3,6 +3,7 @@ package com.example.a61;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -76,7 +77,24 @@ public class QuizActivity extends Activity {
         String selectedAnswer = selectedRadioButton.getText().toString();
         boolean isCorrect = selectedAnswer.equals(correctAnswers.get(currentQuestionIndex));
         setupResultAnimation(isCorrect);
+
         userAnswers.add(selectedAnswer);
+
+
+        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        if (isCorrect){
+            int previousCorrectAnswers = sharedPref.getInt("CORRECT_ANS", 0);
+            int updatedCorrectAnswers = previousCorrectAnswers + 1;
+            editor.putInt("CORRECT_ANS", updatedCorrectAnswers);
+        }
+        else{
+            int previousIncorrectAnswers = sharedPref.getInt("INCORECT_ANS", 0);
+            int updatedIncorrectAnswers = previousIncorrectAnswers + 1;
+            editor.putInt("INCORECT_ANS", updatedIncorrectAnswers);
+        }
+        editor.apply();  // Saves the data asynchronously
+
     }
 
 
