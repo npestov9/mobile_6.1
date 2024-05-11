@@ -65,6 +65,14 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(shareIntent, "Share via"));
             }
         });
+
+        Button upgradeBtn = findViewById(R.id.upgradeButton);
+        upgradeBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UpgradeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
 
