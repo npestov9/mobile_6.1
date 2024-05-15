@@ -38,9 +38,9 @@ public class ProfileActivity extends AppCompatActivity {
         Integer totalQs = correctAns + incorrectAns;
 
         // Set the retrieved data to TextViews
-        totalQsTextView.setText("Total Questions: " + String.valueOf(totalQs));
-        corectAnsTextView.setText("Correctly Answered: " +String.valueOf(correctAns));
-        incorectAnsTextView.setText("Incorrectly Answered: " +String.valueOf(incorrectAns));
+        totalQsTextView.setText(String.valueOf(totalQs));
+        corectAnsTextView.setText(String.valueOf(correctAns));
+        incorectAnsTextView.setText(String.valueOf(incorrectAns));
         usernameTextView.setText(username);
         emailTextView.setText(email);
 

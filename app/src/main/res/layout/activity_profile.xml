@@ -1,147 +1,167 @@
+<!-- activity_profile.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
     android:background="@color/backgroundBlue"
     tools:context=".ProfileActivity">
 
+    <!-- Username -->
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"/>
 
-    <!-- Profile Information -->
-    <LinearLayout
-        android:id="@+id/profileInfoLayout"
+    <!-- Email -->
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="username@example.com"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/usernameTextView"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Share Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/shareButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <TextView
-            android:id="@+id/usernameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Username"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"/>
-
-        <TextView
-            android:id="@+id/emailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="username@example.com"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"/>
-
-    </LinearLayout>
+        android:layout_below="@id/emailTextView"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_green_background"
+        android:text="Share"
+        android:textColor="@android:color/white" />
 
     <!-- Stats Container -->
     <LinearLayout
         android:id="@+id/statsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profileInfoLayout"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:orientation="vertical"
+        android:layout_below="@id/shareButton"
+        android:layout_marginTop="20dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <!-- Total Questions Panel -->
+        <RelativeLayout
+            android:id="@+id/totalQuestionsPanel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:background="@drawable/upgrade_background"
+            android:layout_marginHorizontal="20dp">
+
+            <TextView
+                android:id="@+id/totalQuestionsTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Questions"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"/>
 
             <TextView
                 android:id="@+id/totalQuestionsTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Total Questions"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="@android:color/white"/>
-
-            <TextView
-                android:id="@+id/totalQuestionsValueTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+                android:textSize="14sp"
+                android:layout_below="@id/totalQuestionsTitleTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
+        </RelativeLayout>
+
+        <!-- Correctly Answered Panel -->
+        <RelativeLayout
+            android:id="@+id/correctlyAnsweredPanel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:background="@drawable/upgrade_background"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp">
+
+            <TextView
+                android:id="@+id/correctlyAnsweredTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Correctly Answered"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"/>
 
             <TextView
                 android:id="@+id/correctlyAnsweredTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Correctly Answered"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="@android:color/white"/>
-
-            <TextView
-                android:id="@+id/correctlyAnsweredValueTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+                android:textSize="14sp"
+                android:layout_below="@id/correctlyAnsweredTitleTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
+        </RelativeLayout>
+
+        <!-- Incorrect Answers Panel -->
+        <RelativeLayout
+            android:id="@+id/incorrectAnswersPanel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:background="@drawable/upgrade_background"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp">
+
+            <TextView
+                android:id="@+id/incorrectAnswersTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Incorrect Answers"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"/>
 
             <TextView
                 android:id="@+id/incorrectAnswersTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Incorrect Answers"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="@android:color/white"/>
-
-            <TextView
-                android:id="@+id/incorrectAnswersValueTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+                android:textSize="14sp"
+                android:layout_below="@id/incorrectAnswersTitleTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/seeWrongAnswersButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="See Wrong Answers"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/incorrectAnswersTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"/>
+
+        </RelativeLayout>
+
     </LinearLayout>
 
-    <Button
+    <!-- Upgrade Button -->
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/upgradeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/statsContainer"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/button_background"
         android:text="Upgrade Account"
-        android:textColor="@android:color/white" />
-
-    <Button
-        android:id="@+id/shareButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/statsContainer"
-        android:text="Share"
         android:textColor="@android:color/white"
-        android:background="@drawable/button_background"/>
+        android:background="@drawable/button_background"
+        android:layout_below="@id/statsContainer"
+        android:layout_marginTop="20dp"/>
+
 </RelativeLayout>
