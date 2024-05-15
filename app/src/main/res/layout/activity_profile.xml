@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -34,13 +33,6 @@
             android:textSize="16sp"
             android:textColor="@android:color/white"/>
 
-<!--        <TextView-->
-<!--            android:id="@+id/notificationTextView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Display any important notifications here"-->
-<!--            android:textSize="14sp"-->
-<!--            android:textColor="@android:color/white"/>-->
     </LinearLayout>
 
     <!-- Stats Container -->
@@ -50,37 +42,88 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profileInfoLayout"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:gravity="center">
 
-        <TextView
-            android:id="@+id/totalQuestionsTextView"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Total Questions\n10"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"/>
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/correctlyAnsweredTextView"
+            <TextView
+                android:id="@+id/totalQuestionsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total Questions"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/totalQuestionsValueTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Correctly Answered\n10"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"/>
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/incorrectAnswersTextView"
+            <TextView
+                android:id="@+id/correctlyAnsweredTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correctly Answered"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/correctlyAnsweredValueTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Incorrect Answers\n10"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"/>
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/incorrectAnswersTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Incorrect Answers"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/incorrectAnswersValueTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
     </LinearLayout>
 
     <Button
