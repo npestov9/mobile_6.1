@@ -1,5 +1,5 @@
-<!-- upgrade_activity.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundBlue">
@@ -12,27 +12,135 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
-
-    <TextView
-        android:id="@+id/upgradeDescriptionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Unlock exclusive features and remove ads"
-        android:textSize="18sp"
-        android:layout_below="@id/upgradeTitleTextView"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"/>
 
-    <Button
-        android:id="@+id/upgradeButton"
-        android:layout_width="wrap_content"
+    <!-- Upgrade Section 1 -->
+    <RelativeLayout
+        android:id="@+id/upgradeSection1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Upgrade Now"
-        android:textColor="@android:color/white"
-        android:background="@drawable/button_background"
-        android:layout_below="@id/upgradeDescriptionTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:background="@drawable/upgrade_background"
+        android:layout_below="@id/upgradeTitleTextView"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/upgradeTitleTextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Starter"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/upgradeDescriptionTextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Improved quiz generation"
+            android:textSize="14sp"
+            android:layout_below="@id/upgradeTitleTextView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/upgradeButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upgrade Now"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_background"
+            android:layout_below="@id/upgradeDescriptionTextView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
+
+    <!-- Upgrade Section 2 -->
+    <RelativeLayout
+        android:id="@+id/upgradeSection2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/upgrade_background"
+        android:layout_below="@id/upgradeSection1"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/upgradeTitleTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Intermediate"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/upgradeDescriptionTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beginner benefits + no ads"
+            android:textSize="14sp"
+            android:layout_below="@id/upgradeTitleTextView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/upgradeButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upgrade Now"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_background"
+            android:layout_below="@id/upgradeDescriptionTextView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
+
+    <!-- Upgrade Section 3 -->
+    <RelativeLayout
+        android:id="@+id/upgradeSection3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/upgrade_background"
+        android:layout_below="@id/upgradeSection2"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/upgradeTitleTextView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Advanced"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/upgradeDescriptionTextView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Intermediate benefits + more categories"
+            android:textSize="14sp"
+            android:layout_below="@id/upgradeTitleTextView3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/upgradeButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upgrade Now"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_background"
+            android:layout_below="@id/upgradeDescriptionTextView3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

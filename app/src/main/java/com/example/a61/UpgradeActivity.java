@@ -26,7 +26,9 @@ public class UpgradeActivity extends AppCompatActivity {
     private static final String TAG = "PayPalActivity";
     private static final int PAYPAL_REQUEST_CODE = 123;
 
-    private Button paymentButton;
+    private Button paymentButton1;
+    private Button paymentButton2;
+    private Button paymentButton3;
     private PayPalConfiguration paypalConfig;
 
     @Override
@@ -39,18 +41,34 @@ public class UpgradeActivity extends AppCompatActivity {
                 .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX) // Use sandbox for testing
                 .clientId("Abezek8rUEH6BTeC9J5TMv0yJWynWF6KAmD8d9IGXsuzI9IUDDn-sSYwtYO89stdf3U7nw2u9iUbMVGU");
 
-        paymentButton = findViewById(R.id.upgradeButton);
-        paymentButton.setOnClickListener(new View.OnClickListener() {
+        paymentButton1 = findViewById(R.id.upgradeButton1);
+        paymentButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makePayment();
+                makePayment(5);
+            }
+        });
+
+        paymentButton2 = findViewById(R.id.upgradeButton2);
+        paymentButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makePayment(10);
+            }
+        });
+
+        paymentButton3 = findViewById(R.id.upgradeButton3);
+        paymentButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makePayment(20);
             }
         });
     }
 
-    private void makePayment() {
+    private void makePayment(int cost) {
         PayPalPayment payment = new PayPalPayment(
-                new BigDecimal("10.00"), "USD", "Test Payment",
+                new BigDecimal(cost), "USD", "Test Payment",
                 PayPalPayment.PAYMENT_INTENT_SALE
         );
 
