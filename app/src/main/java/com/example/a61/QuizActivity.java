@@ -37,6 +37,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
+
 public class QuizActivity extends Activity {
     private List<String> userAnswers = new ArrayList<>();
     private List<String> correctAnswers = new ArrayList<>();
@@ -47,6 +54,11 @@ public class QuizActivity extends Activity {
     private List<JSONObject> questions = new ArrayList<>();
     private List<String> questionStrs = new ArrayList<>();
     private String topic;
+
+
+    private MongoClient mongoClient;
+    private MongoDatabase database;
+    private MongoCollection<Document> incorrectAnswersCollection;
 
 
     @Override
@@ -69,6 +81,11 @@ public class QuizActivity extends Activity {
             }
             checkAnswer();
         });
+
+        //mongo
+        mongoClient = new MongoClient(new MongoClientURI("mongodb://<username>:<password>@<host>:<port>/<database>"));
+        database = mongoClient.getDatabase("<database>");
+        incorrectAnswersCollection = database.getCollection("incorrect_answers");
     }
 
     private void checkAnswer() {
@@ -95,6 +112,19 @@ public class QuizActivity extends Activity {
         }
         editor.apply();  // Saves the data asynchronously
 
+
+        if (!isCorrect) {
+            saveIncorrectAnswerToMongoDB(questionTextView.getText().toString(), selectedAnswer, correctAnswers.get(currentQuestionIndex));
+        }
+    }
+
+    private void saveIncorrectAnswerToMongoDB(String question, String userAnswer, String correctAnswer) {
+        Document incorrectAnswerDoc = new Document()
+                .append("question", question)
+                .append("user_answer", userAnswer)
+                .append("correct_answer", correctAnswer);
+
+        incorrectAnswersCollection.insertOne(incorrectAnswerDoc);
     }
 
 
@@ -300,6 +330,15 @@ public class QuizActivity extends Activity {
             }
         });
         animator.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Close MongoDB client on activity destroy
+        if (mongoClient != null) {
+            mongoClient.close();
+        }
     }
 
 
