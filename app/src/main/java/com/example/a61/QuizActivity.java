@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -128,12 +129,16 @@ public class QuizActivity extends Activity {
         // Add the incorrect answer to the list
         incorrectAnswersList.add(incorrectAnswerText);
 
-        // Save the list to SharedPreferences
+        // Convert the list to a single string with delimiter
+        String answersString = TextUtils.join("|", incorrectAnswersList);
+
+        // Save the string to SharedPreferences
         SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putStringSet("INCORRECT_ANSWERS_SET", new HashSet<>(incorrectAnswersList));
+        editor.putString("INCORRECT_ANSWERS_STRING", answersString);
         editor.apply();
     }
+
 
 
 

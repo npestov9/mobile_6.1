@@ -25,11 +25,20 @@ public class IncorrectAnswersActivity extends AppCompatActivity {
         Set<String> incorrectAnswersSet = sharedPref.getStringSet("INCORRECT_ANSWERS_SET", new HashSet<>());
         incorrectAnswersList.addAll(incorrectAnswersSet);
 
+        // Split the string and add each line to the list
+        List<String> formattedIncorrectAnswers = new ArrayList<>();
+        for (String answer : incorrectAnswersList) {
+            String[] lines = answer.split("\n");
+            for (String line : lines) {
+                formattedIncorrectAnswers.add(line);
+            }
+        }
+
         // Initialize the ListView
         incorrectAnswersListView = findViewById(R.id.incorrectAnswersListView);
 
         // Set up the adapter for the ListView
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, incorrectAnswersList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, formattedIncorrectAnswers);
         incorrectAnswersListView.setAdapter(adapter);
     }
 }

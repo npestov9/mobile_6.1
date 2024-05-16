@@ -2,21 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/backgroundBlue">
 
     <TextView
-        android:id="@+id/incorrectAnswersTextView"
-        android:layout_width="match_parent"
+        android:id="@+id/incorrectAnswersTitleTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Incorrect Answers"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@android:color/white"
         android:layout_marginBottom="16dp"/>
 
     <ListView
         android:id="@+id/incorrectAnswersListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/incorrectAnswersTextView"/>
+        android:layout_below="@id/incorrectAnswersTitleTextView"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/upgrade_background"/>
 
 </RelativeLayout>
