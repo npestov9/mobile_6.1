@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class ProfileActivity extends AppCompatActivity {
     private TextView usernameTextView, emailTextView, corectAnsTextView, incorectAnsTextView, totalQsTextView;
@@ -73,6 +77,29 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button showIncoreectAnsBtn = findViewById(R.id.seeWrongAnswersButton);
+        showIncoreectAnsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, IncorrectAnswersActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+    private void showResults() {
+        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        ArrayList<String> incorrectAnswersList = new ArrayList<>();
+        // Retrieve the list of incorrect answers from SharedPreferences
+        Set<String> incorrectAnswersSet = sharedPref.getStringSet("INCORRECT_ANSWERS_SET", new HashSet<>());
+        incorrectAnswersList.addAll(incorrectAnswersSet);
+
+        // Pass the list of incorrect answers to IncorrectAnswersActivity
+        Intent intent = new Intent(ProfileActivity.this, IncorrectAnswersActivity.class);
+        intent.putStringArrayListExtra("incorrectAnswersList", incorrectAnswersList);
+        startActivity(intent);
+    }
+
 }
 

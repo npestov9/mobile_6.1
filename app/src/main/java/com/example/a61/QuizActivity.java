@@ -81,11 +81,10 @@ public class QuizActivity extends Activity {
             }
             checkAnswer();
         });
-
         //mongo
-        mongoClient = new MongoClient(new MongoClientURI("mongodb://<username>:<password>@<host>:<port>/<database>"));
-        database = mongoClient.getDatabase("<database>");
-        incorrectAnswersCollection = database.getCollection("incorrect_answers");
+//        mongoClient = new MongoClient(new MongoClientURI("mongodb://<nikitapestov>:<abcd>@<localhost>:<8080>/<incorectansw>"));
+//        database = mongoClient.getDatabase("<incorectansw>");
+//        incorrectAnswersCollection = database.getCollection("incorrect_answers");
     }
 
     private void checkAnswer() {
@@ -117,15 +116,25 @@ public class QuizActivity extends Activity {
             saveIncorrectAnswerToMongoDB(questionTextView.getText().toString(), selectedAnswer, correctAnswers.get(currentQuestionIndex));
         }
     }
+    private List<String> incorrectAnswersList = new ArrayList<>();
 
     private void saveIncorrectAnswerToMongoDB(String question, String userAnswer, String correctAnswer) {
+        // Prepare the incorrect answer text
+        String questionText = questionTextView.getText().toString();
+        String incorrectAnswer = userAnswer + " (Correct Answer: " + correctAnswer + ")";
+        String incorrectAnswerText = questionText + ": " + incorrectAnswer;
+
+        // Add the incorrect answer to the list
+        incorrectAnswersList.add(incorrectAnswerText);
+
+        // Assuming you want to save it to MongoDB as well
         Document incorrectAnswerDoc = new Document()
-                .append("question", question)
+                .append("question", questionText)
                 .append("user_answer", userAnswer)
                 .append("correct_answer", correctAnswer);
-
         incorrectAnswersCollection.insertOne(incorrectAnswerDoc);
     }
+
 
 
     private static final Map<String, String> entities;
@@ -332,14 +341,14 @@ public class QuizActivity extends Activity {
         animator.start();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Close MongoDB client on activity destroy
-        if (mongoClient != null) {
-            mongoClient.close();
-        }
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        // Close MongoDB client on activity destroy
+//        if (mongoClient != null) {
+//            mongoClient.close();
+//        }
+//    }
 
 
 
