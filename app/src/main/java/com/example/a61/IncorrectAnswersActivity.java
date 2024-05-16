@@ -2,6 +2,7 @@ package com.example.a61;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class IncorrectAnswersActivity extends AppCompatActivity {
         Set<String> incorrectAnswersSet = sharedPref.getStringSet("INCORRECT_ANSWERS_SET", new HashSet<>());
         incorrectAnswersList.addAll(incorrectAnswersSet);
 
+
         // Split the string and add each line to the list
         List<String> formattedIncorrectAnswers = new ArrayList<>();
         for (String answer : incorrectAnswersList) {
@@ -40,5 +42,7 @@ public class IncorrectAnswersActivity extends AppCompatActivity {
         // Set up the adapter for the ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, formattedIncorrectAnswers);
         incorrectAnswersListView.setAdapter(adapter);
+
+        Log.d("IncorrectAnswersActivity", "Size of incorrectAnswersList: " + incorrectAnswersList.size());
     }
 }

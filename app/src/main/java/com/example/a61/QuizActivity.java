@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -128,16 +129,16 @@ public class QuizActivity extends Activity {
 
         // Add the incorrect answer to the list
         incorrectAnswersList.add(incorrectAnswerText);
+        Log.d("QuizActivity", "Size of incorrectAnswersList: " + incorrectAnswersList.size());
 
-        // Convert the list to a single string with delimiter
-        String answersString = TextUtils.join("|", incorrectAnswersList);
-
-        // Save the string to SharedPreferences
+        // Save the list to SharedPreferences as a set
         SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("INCORRECT_ANSWERS_STRING", answersString);
+        Set<String> incorrectAnswersSet = new HashSet<>(incorrectAnswersList);
+        editor.putStringSet("INCORRECT_ANSWERS_SET", incorrectAnswersSet);
         editor.apply();
     }
+
 
 
 
