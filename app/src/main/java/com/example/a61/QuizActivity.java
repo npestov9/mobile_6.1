@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -127,13 +128,13 @@ public class QuizActivity extends Activity {
         // Add the incorrect answer to the list
         incorrectAnswersList.add(incorrectAnswerText);
 
-        // Assuming you want to save it to MongoDB as well
-        Document incorrectAnswerDoc = new Document()
-                .append("question", questionText)
-                .append("user_answer", userAnswer)
-                .append("correct_answer", correctAnswer);
-        incorrectAnswersCollection.insertOne(incorrectAnswerDoc);
+        // Save the list to SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putStringSet("INCORRECT_ANSWERS_SET", new HashSet<>(incorrectAnswersList));
+        editor.apply();
     }
+
 
 
 
